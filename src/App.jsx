@@ -1,33 +1,52 @@
-import { useState } from 'react'
+import { useState } from 'react'  
+import axios from 'axios';
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+const [searchName, setSearchName] = useState("");
+const [searchTag, setSearchTag] = useState("");
+const [playerData, setPlayerData] = useState({ });
+const API_KEY = "RGAPI-239b5ffb-b5e1-4322-bfe7-382319de9f9a";
+
+  function searchForPlayer(event){
+    // Set up de correcte api call
+    var APICallingAccountString = "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/"+ searchName +"/" + searchTag + "?api_key=" + API_KEY;
+    //Handel de API Call
+    axios.get(APICallingAccountString).then(function (response){
+      //Success
+      setPlayerData(response.data);
+    }).catch(function(error){
+      //Error
+      console.log(error)
+    });
+  }
+  
+  console.log(playerData)
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className='App'>
+      <div className='container'>
+        <h5>League of Legends Plaayer Searcher</h5>
+        <input type='text' onChange={e => setSearchName(e.target.value)}></input>
+        {/* <input type='text' onChange={e => setSearchTag(e.target.value)}></input> */}
+        <button onClick={e => searchForPlayer(e)}>Searcher For Player</button>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      {JSON.stringify(playerData) != '{}' ? 
+      <>
+      <p>{playerData.name}</p>
+      <p>{playerData.summonerLevel}</p>
+      <img widht="100" height="100" src={"https://ddragon.leagueoflegends.com/cdn/14.5.1/img/profileicon/" + playerData.profileIconId + ".png"}></img>
+
+      </>
+      :
+      <><p>We have no player data</p></>
+      }
+
+    </div>
+
     </>
   )
 }
