@@ -1,0 +1,43 @@
+.user-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .user-name {
+    flex: 1;
+    margin-right: 10px;
+  }
+  
+  .button-container {
+    display: flex;
+  }
+  
+  .action-button {
+    margin-right: 5px;
+  }
+
+  /* Styling for the button */
+.action-button {
+  padding: 5px 20px;
+  margin: 1px;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  background-color: #007bff;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition-duration: 0.4s;
+}
+
+.action-button:hover {
+  background-color: #0056b3;
+}
+
+/* Additional styling for Link to look like a button */
+.link-button {
+  display: inline-block;
+}

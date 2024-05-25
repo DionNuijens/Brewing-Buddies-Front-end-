@@ -1,0 +1,16 @@
+.navbar-container {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+  }
+
+  .content-container {
+    margin-top: 4rem; /* Adjust this value based on the height of your navbar */
+    padding: 2rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  

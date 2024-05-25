@@ -28,10 +28,16 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column; /* Add this line to make sure content flows top to bottom */
+}
+
+.main-content {
+  display: flex;
+  place-items: center;
+  flex: 1; /* This will make the main content take up the remaining space */
 }
 
 h1 {
