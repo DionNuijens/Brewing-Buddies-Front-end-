@@ -2,16 +2,14 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import NavBar from './Components/NavBar.jsx'; // Assuming you have a separate component file for NavBar
-import './App.css'; // Import your main CSS file
-import './css/NavBar.css'; // Import your NavBar CSS file
-
-// Import your components or pages
+import NavBar from './Components/NavBar.jsx'; 
+import './App.css'; 
+import './css/NavBar.css'; 
 import Home from './pages/HomePage.jsx';
-import AboutPage from './pages/AboutPage.jsx'; // Import AboutPage
+import AboutPage from './pages/AboutPage.jsx'; 
 import Services from './pages/ServicesPage.jsx';
 import Contact from './pages/ContactPage.jsx';
-import EditUserPage from './pages/EditUserPage.jsx'; // Import EditUserPage
+import EditUserPage from './pages/EditUserPage.jsx'; 
 
 function App() {
   return (

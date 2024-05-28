@@ -31,13 +31,13 @@ body {
   min-width: 320px;
   min-height: 100vh;
   display: flex;
-  flex-direction: column; /* Add this line to make sure content flows top to bottom */
+  flex-direction: column; 
 }
 
 .main-content {
   display: flex;
   place-items: center;
-  flex: 1; /* This will make the main content take up the remaining space */
+  flex: 1; 
 }
 
 h1 {

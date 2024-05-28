@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../css/ManageUser.css'; // Import CSS file for styling
-import axios from 'axios'; // Import Axios
+import '../css/ManageUser.css'; 
+import axios from 'axios'; 
 
 
 const AboutPage = () => {
-  // State to store the data fetched from the API
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
 
@@ -20,7 +19,6 @@ const AboutPage = () => {
   const handleDelete = (user) => {
     const confirmed = window.confirm('Are you sure you want to proceed?');
     if (confirmed) {
-      // Perform the action
       axios.delete(`https://localhost:7097/Delete?userId=${user.id}`)
         .then(() => setStatus('Delete successful'))
         .catch((error) => {
@@ -31,22 +29,17 @@ const AboutPage = () => {
       window. location. reload();
 
     } else {
-      // Handle the cancellation
       console.log('Cancelled');
     }
   };
 
-  // Function to fetch data from the API
   const fetchData = async () => {
     try {
-      // Make API request to fetch data
-      const response = await fetch('https://localhost:7097/GetUsers'); // Ensure the protocol is correct
+      const response = await fetch('https://localhost:7097/GetUsers'); 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      // Parse JSON response
       const jsonData = await response.json();
-      // Set the fetched data to the state
       setData(jsonData);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -54,7 +47,6 @@ const AboutPage = () => {
     }
   };
 
-  // useEffect hook to fetch data when the component mounts
   useEffect(() => {
     fetchData();
   }, []);
@@ -70,15 +62,12 @@ const AboutPage = () => {
             <p className="user-name">
               {user.userName}
             </p>
-            {/* Buttons in the same line */}
             <div className="button-container">
-              {/* <button className="action-button" onClick={() => handleButtonClick(user.userName)}>Button 1</button> */}
               <button onClick={() => handleDelete(user)}>
                 Delete
               </button>
               <button   onClick={() => handleEdit(user)}>Edit</button>
             </div>
-            {/* Render other data fields as needed */}
           </div>
         ))
       ) : (

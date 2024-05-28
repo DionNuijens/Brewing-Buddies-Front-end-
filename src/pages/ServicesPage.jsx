@@ -5,20 +5,16 @@ const CreateUserPage = () => {
   const [userName, setUserName] = useState('');
   const navigate = useNavigate();
 
-  // Function to handle input changes
   const handleInputChange = (event) => {
     setUserName(event.target.value);
   };
 
-  // Function to handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Create a new user object
     const newUser = { userName };
 
     try {
-      // Send POST request to create user
       const response = await fetch(`https://localhost:7097/AddUser`, {
         method: 'POST',
         headers: {
@@ -28,11 +24,9 @@ const CreateUserPage = () => {
       });
 
       if (response.ok) {
-        // Handle success
         console.log('User created successfully');
         navigate(`/about`);
       } else {
-        // Handle error
         console.error('Failed to create user');
       }
     } catch (error) {

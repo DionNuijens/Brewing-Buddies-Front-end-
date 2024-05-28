@@ -17,7 +17,6 @@
     margin-right: 5px;
   }
 
-  /* Styling for the button */
 .action-button {
   padding: 5px 20px;
   margin: 1px;
@@ -37,7 +36,6 @@
   background-color: #0056b3;
 }
 
-/* Additional styling for Link to look like a button */
 .link-button {
   display: inline-block;
 }
