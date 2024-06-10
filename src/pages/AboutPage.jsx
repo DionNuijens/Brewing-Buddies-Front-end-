@@ -1,19 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../css/ManageUser.css'; 
-import axios from 'axios'; 
-
+import '../css/ManageUser.css';
+import axios from 'axios';
 
 const AboutPage = () => {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
+  const [sessionError, setSessionError] = useState(null);
+  const user = JSON.parse(sessionStorage.getItem('user'));
+
 
   const navigate = useNavigate();
 
-  const handleEdit = (user) => {
-    sessionStorage.setItem('user', JSON.stringify(user));
-    navigate(`/edit`)
+const handeleConnect = (user) => {
+  sessionStorage.setItem('userConnect', JSON.stringify(user));
 
+  navigate('/');
+}
+
+  const handleEdit = (user) => {
+    sessionStorage.setItem('userEdit', JSON.stringify(user));
+    navigate(`/edit`);
   };
 
   const handleDelete = (user) => {
@@ -26,8 +33,7 @@ const AboutPage = () => {
           setStatus('Delete failed');
         });
       console.log('Confirmed');
-      window. location. reload();
-
+      window.location.reload();
     } else {
       console.log('Cancelled');
     }
@@ -35,7 +41,7 @@ const AboutPage = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('https://localhost:7097/GetUsers'); 
+      const response = await fetch(`https://localhost:7097/account/${user.id}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -48,13 +54,20 @@ const AboutPage = () => {
   };
 
   useEffect(() => {
-    fetchData();
+    const userSession = sessionStorage.getItem('user');
+    if (!userSession) {
+      setSessionError('No session found. Please log in.');
+    } else {
+      fetchData();
+    }
   }, []);
 
   return (
     <div>
       <h1>About Page</h1>
-      {error ? (
+      {sessionError ? (
+        <p className="error-message">{sessionError}</p>
+      ) : error ? (
         <p>Error: {error}</p>
       ) : data.length > 0 ? (
         data.map((user, index) => (
@@ -66,7 +79,16 @@ const AboutPage = () => {
               <button onClick={() => handleDelete(user)}>
                 Delete
               </button>
-              <button   onClick={() => handleEdit(user)}>Edit</button>
+              <button onClick={() => handleEdit(user)}>Edit</button>
+              {user.riotId === null ? (
+              <button onClick={() => handeleConnect(user)}>
+                Connect Account
+              </button>
+            ) : (
+              <button className='connect-button'>
+                Connect Account
+              </button>
+            )}
             </div>
           </div>
         ))

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 const EditUserPage = () => {
   const [userName, setUserName] = useState('');
-  const user = JSON.parse(sessionStorage.getItem('user'));
+  const user = JSON.parse(sessionStorage.getItem('userEdit'));
 
   useState(() => {
     setUserName(user.userName);

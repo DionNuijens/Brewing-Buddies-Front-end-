@@ -1,19 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const CreateUserPage = () => {
   const [userName, setUserName] = useState('');
+  const [sessionError, setSessionError] = useState(null);
   const navigate = useNavigate();
+  const user = JSON.parse(sessionStorage.getItem('user'));
 
+  
   const handleInputChange = (event) => {
     setUserName(event.target.value);
   };
-
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    const newUser = { userName };
-
+    
+    const newUser = { userName, accountId: user.id };
+    
     try {
       const response = await fetch(`https://localhost:7097/AddUser`, {
         method: 'POST',
@@ -34,18 +37,29 @@ const CreateUserPage = () => {
     }
   };
 
+  useEffect(() => {
+    const userSession = sessionStorage.getItem('user');
+    if (!userSession) {
+      setSessionError('No session found. Please log in.');
+    }
+  }, []);
+
   return (
     <div>
       <h1>Create User Page</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type='text'
-          value={userName}
-          onChange={handleInputChange}
-          placeholder='Enter username'
-        />
-        <button type="submit">Create User</button>
-      </form>
+      {sessionError ? (
+        <p className="error-message">{sessionError}</p>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <input
+            type='text'
+            value={userName}
+            onChange={handleInputChange}
+            placeholder='Enter username'
+          />
+          <button type="submit">Create User</button>
+        </form>
+      )}
     </div>
   );
 };
