@@ -1,20 +1,31 @@
-// src/components/NavBar.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
+import '../css/NavBar.css';
+import LoginButton from '../Components/Login.jsx';
+import LogoutButton from '../Components/Logout.jsx';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const NavBar = () => {
+  const { isAuthenticated } = useAuth0();
+
   return (
     <nav className="navbar-container">
       <ul className="navbar-links">
         <li><Link to="/" className="navbar-link">Home</Link></li>
         <li><Link to="/about" className="navbar-link">Manage Users</Link></li>
         <li><Link to="/services" className="navbar-link">Create User</Link></li>
+        <li><Link to="/requests" className="navbar-link">Requests</Link></li>
       </ul>
       <ul className="navbar-links">
-        <li><Link to="/requests" className="navbar-link">Requests</Link></li>
-        <li><Link to="/contact" className="navbar-link">Registration</Link></li>
-        <li><Link to="/login" className="navbar-link">Login</Link></li>
-        
+        {isAuthenticated ? (
+          <>
+            <li><LogoutButton /></li>
+          </>
+        ) : (
+          <>
+            <li><LoginButton /></li>
+          </>
+        )}
       </ul>
     </nav>
   );

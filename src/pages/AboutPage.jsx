@@ -1,39 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 import '../css/ManageUser.css';
 import axios from 'axios';
 
 const AboutPage = () => {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
-  const [sessionError, setSessionError] = useState(null);
-  const user = JSON.parse(sessionStorage.getItem('user'));
-
-
+  const { user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
   const navigate = useNavigate();
+  // const { getAccessTokenSilently } = useAuth0(); 
 
-const handeleConnect = (user) => {
-  sessionStorage.setItem('userConnect', JSON.stringify(user));
-
-  navigate('/');
-}
+  const handeleConnect = (user) => {
+    sessionStorage.setItem('userConnect', JSON.stringify(user));
+    navigate('/');
+  };
 
   const handleEdit = (user) => {
     sessionStorage.setItem('userEdit', JSON.stringify(user));
     navigate(`/edit`);
   };
 
-  const handleDelete = (user) => {
+  const handleDelete = async (user) => {
     const confirmed = window.confirm('Are you sure you want to proceed?');
     if (confirmed) {
-      axios.delete(`https://localhost:7097/Delete?userId=${user.id}`)
-        .then(() => setStatus('Delete successful'))
-        .catch((error) => {
-          console.error('Error deleting user:', error);
-          setStatus('Delete failed');
-        });
-      console.log('Confirmed');
+      try {
+      const accessToken = await getAccessTokenSilently(); 
+      const response = axios.delete(`https://localhost:7097/Delete?userId=${user.id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+      })
+      console.log('User deleted successfully');
+      // console.log(response);
       window.location.reload();
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      console.log('Delete failed');
+    }
+    console.log('Confirmed');;
     } else {
       console.log('Cancelled');
     }
@@ -41,12 +47,17 @@ const handeleConnect = (user) => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`https://localhost:7097/account/${user.id}`);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const jsonData = await response.json();
-      setData(jsonData);
+      const accessToken = await getAccessTokenSilently();
+      console.log(accessToken);
+
+      const response = await axios.get(`https://localhost:7097/account?AccountId=${user.sub}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+        },
+      });
+
+      setData(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
       setError(error.message);
@@ -54,20 +65,23 @@ const handeleConnect = (user) => {
   };
 
   useEffect(() => {
-    const userSession = sessionStorage.getItem('user');
-    if (!userSession) {
-      setSessionError('No session found. Please log in.');
-    } else {
+    if (isAuthenticated) {
       fetchData();
     }
-  }, []);
+  }, [isAuthenticated]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!isAuthenticated) {
+    return <div>Please log in to view this page.</div>;
+  }
 
   return (
     <div>
       <h1>About Page</h1>
-      {sessionError ? (
-        <p className="error-message">{sessionError}</p>
-      ) : error ? (
+      {error ? (
         <p>Error: {error}</p>
       ) : data.length > 0 ? (
         data.map((user, index) => (
@@ -76,19 +90,19 @@ const handeleConnect = (user) => {
               {user.userName}
             </p>
             <div className="button-container">
-              <button onClick={() => handleDelete(user)}>
+              <button id="deleteUser" onClick={() => handleDelete(user)}>
                 Delete
               </button>
-              <button onClick={() => handleEdit(user)}>Edit</button>
+              <button id="editUser" onClick={() => handleEdit(user)}>Edit</button>
               {user.riotId === null ? (
-              <button onClick={() => handeleConnect(user)}>
-                Connect Account
-              </button>
-            ) : (
-              <button className='connect-button'>
-                Connect Account
-              </button>
-            )}
+                <button onClick={() => handeleConnect(user)}>
+                  Connect Account
+                </button>
+              ) : (
+                <button className='connect-button'>
+                  Connect Account
+                </button>
+              )}
             </div>
           </div>
         ))

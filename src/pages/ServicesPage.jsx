@@ -1,32 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
+import axios from 'axios';
 
 const CreateUserPage = () => {
   const [userName, setUserName] = useState('');
-  const [sessionError, setSessionError] = useState(null);
+  const { user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
   const navigate = useNavigate();
-  const user = JSON.parse(sessionStorage.getItem('user'));
+  const [error, setError] = useState(null);
 
-  
   const handleInputChange = (event) => {
     setUserName(event.target.value);
   };
-  
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
-    const newUser = { userName, accountId: user.id };
-    
+
+    if (!isAuthenticated) {
+      setError('You must be logged in to create a user.');
+      return;
+    }
+
+    const newUser = { userName, accountId: user.sub };
+
     try {
-      const response = await fetch(`https://localhost:7097/AddUser`, {
-        method: 'POST',
+      const accessToken = await getAccessTokenSilently();
+
+      const response = await axios.post(`https://localhost:7097/AddUser`, newUser, {
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
         },
-        body: JSON.stringify(newUser),
       });
 
-      if (response.ok) {
+      if (response.status >= 200 && response.status < 300) {
         console.log('User created successfully');
         navigate(`/about`);
       } else {
@@ -37,29 +44,28 @@ const CreateUserPage = () => {
     }
   };
 
-  useEffect(() => {
-    const userSession = sessionStorage.getItem('user');
-    if (!userSession) {
-      setSessionError('No session found. Please log in.');
-    }
-  }, []);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!isAuthenticated) {
+    return <div>Please log in to view this page.</div>;
+  }
 
   return (
     <div>
       <h1>Create User Page</h1>
-      {sessionError ? (
-        <p className="error-message">{sessionError}</p>
-      ) : (
-        <form onSubmit={handleSubmit}>
-          <input
-            type='text'
-            value={userName}
-            onChange={handleInputChange}
-            placeholder='Enter username'
-          />
-          <button type="submit">Create User</button>
-        </form>
-      )}
+      {error && <p className="error-message">{error}</p>}
+      <form onSubmit={handleSubmit}>
+        <input
+          id="UserName"
+          type="text"
+          value={userName}
+          onChange={handleInputChange}
+          placeholder="Enter username"
+        />
+        <button id="CreateUser" type="submit" className='create-user'>Create User</button>
+      </form>
     </div>
   );
 };

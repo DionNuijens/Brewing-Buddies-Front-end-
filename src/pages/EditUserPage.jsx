@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const EditUserPage = () => {
   const [userName, setUserName] = useState('');
   const user = JSON.parse(sessionStorage.getItem('userEdit'));
+  const { getAccessTokenSilently } = useAuth0();
 
   useState(() => {
     setUserName(user.userName);
@@ -16,7 +18,7 @@ const EditUserPage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    const accessToken = await getAccessTokenSilently();
     const updatedUser = { ...user, userName };
 
     try {
@@ -24,6 +26,7 @@ const EditUserPage = () => {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
         },
         body: JSON.stringify(updatedUser),
       });
@@ -43,8 +46,8 @@ const EditUserPage = () => {
     <div>
       <h1>Edit User Page</h1>
       <form onSubmit={handleSubmit}>
-        <input type='text' value={userName} onChange={handleInputChange} />
-        <button type="submit">Update User</button>
+        <input id="userName" type='text' value={userName} onChange={handleInputChange} />
+        <button id="updateUser" type="submit">Update User</button>
       </form>
     </div>
   );
