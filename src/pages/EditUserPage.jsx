@@ -22,7 +22,7 @@ const EditUserPage = () => {
     const updatedUser = { ...user, userName };
 
     try {
-      const response = await fetch(`https://localhost:7097/updateUser`, {
+      const response = await fetch(`https://localhost:7097/UpdateUser`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ const EditUserPage = () => {
 
       if (response.ok) {
         console.log('User updated successfully');
-        navigate(`/about`)
+        navigate(`/manageUsers`)
       } else {
         console.error('Failed to update user');
       }

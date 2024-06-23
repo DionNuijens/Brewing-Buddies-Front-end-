@@ -16,5 +16,5 @@ button .disabled {
 }
 
 .login-button:hover {
-  background-color: #0056b3; /* Darker shade of primary color on hover */
+  background-color: #0056b3; 
 }

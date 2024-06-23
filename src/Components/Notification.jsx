@@ -27,10 +27,9 @@ const NotificationComponent = () => {
                 await connection.start();
                 console.log('SignalR Connected.');
 
-                // Cleanup connection on component unmount
                 return () => {
-                    connection.off("ReceiveNotification"); // Remove event listener
-                    connection.stop(); // Stop the SignalR connection
+                    connection.off("ReceiveNotification"); 
+                    connection.stop(); 
                 };
             } catch (error) {
                 console.error('SignalR Connection Error: ', error);

@@ -12,9 +12,9 @@ const NavBar = () => {
     <nav className="navbar-container">
       <ul className="navbar-links">
         <li><Link to="/" className="navbar-link">Home</Link></li>
-        <li><Link to="/about" className="navbar-link">Manage Users</Link></li>
-        <li><Link to="/services" className="navbar-link">Create User</Link></li>
-        <li><Link to="/requests" className="navbar-link">Requests</Link></li>
+        <li><Link to="/manageUsers" className="navbar-link">Manage Users</Link></li>
+        <li><Link to="/createUser" className="navbar-link">Create User</Link></li>
+        <li><Link to="/manageRequests" className="navbar-link">Requests</Link></li>
       </ul>
       <ul className="navbar-links">
         {isAuthenticated ? (

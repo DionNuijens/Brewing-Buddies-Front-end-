@@ -12,6 +12,14 @@ describe('CRUD', () => {
     cy.Auth0Login(email, password);
      
   });
+  it('should return 400 error on creating user with empty input', () => {
+    cy.intercept('POST', '/AddUser*').as('createUser');   
+    cy.contains('Create User').click();  
+    cy.get('#CreateUser').click();
+    
+    cy.contains('.user-name', userName).should('not.exist'); 
+    cy.wait('@createUser').its('response.statusCode').should('eq', 400); 
+  });
 
   it('should create a user', () => {
     cy.intercept('POST', '/AddUser*').as('createUser');   
@@ -32,6 +40,16 @@ describe('CRUD', () => {
     cy.get('.user-container').should('be.visible'); 
     cy.contains('.user-name', userName).should('exist');
 
+  });
+
+  it('should return 400 error on updating user with empty input', () => {
+    cy.intercept('PUT', '/updateUser*').as('updateUser');
+    cy.contains('Manage Users').click();
+    cy.get('#editUser').click();
+    cy.get('#userName').clear();
+    cy.get('#updateUser').click();  
+  
+    cy.wait('@updateUser').its('response.statusCode').should('eq', 400); 
   });
 
   it('should edit a user', () => {

@@ -8,11 +8,11 @@ const Home = () => {
   const [searchTag, setSearchTag] = useState("");
   const [playerData, setPlayerData] = useState({});
   const navigate = useNavigate();
-  const { getAccessTokenSilently } = useAuth0(); // Import getAccessTokenSilently from useAuth0
+  const { getAccessTokenSilently } = useAuth0(); 
   const user = JSON.parse(sessionStorage.getItem('userConnect'));
 
   const searchForPlayer = async (event) => {
-    const APICallingAccountString = `https://localhost:7097/api/Values/Summoner?gameName=${searchName}&tagLine=${searchTag}`;
+    const APICallingAccountString = `https://localhost:7097/api/Values/GetSummoner?gameName=${searchName}&tagLine=${searchTag}`;
     
     try {
       const accessToken = await getAccessTokenSilently();
@@ -56,10 +56,10 @@ const Home = () => {
 
       if (response.ok && response2.ok) {
         console.log('User updated successfully');
-        navigate(`/about`);
+        navigate(`/manageUsers`);
       } else {
         console.error('Failed to update user');
-        navigate(`/about`);
+        navigate(`/manageUsers`);
       }
     } catch (error) {
       console.error('Error updating user:', error);

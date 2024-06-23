@@ -35,7 +35,7 @@ const CreateUserPage = () => {
 
       if (response.status >= 200 && response.status < 300) {
         console.log('User created successfully');
-        navigate(`/about`);
+        navigate(`/manageUsers`);
       } else {
         console.error('Failed to create user');
       }
@@ -49,7 +49,12 @@ const CreateUserPage = () => {
   }
 
   if (!isAuthenticated) {
-    return <div>Please log in to view this page.</div>;
+    return (
+      <div>
+        <h1>Create User Page</h1>
+        <div>Please log in to view this page.</div>
+      </div>
+    );
   }
 
   return (

@@ -22,27 +22,27 @@ function CreatReqeustPage() {
         const accessToken = await getAccessTokenSilently();
         console.log(user.sub);
         
-        const response1 = await fetch(`https://localhost:7097/ConnectedAccounts?AccountId=${user.sub}`, {
+        const OwnAccount = await fetch(`https://localhost:7097/GetConnectedAccounts?AccountId=${user.sub}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`
           }
         });
-        if (!response1.ok) {
+        if (!OwnAccount.ok) {
           throw new Error('Failed to fetch dropdown 1 options');
         }
-        const data1 = await response1.json();
-        setDropdownOptions1(data1);
+        const OwnAccounts = await OwnAccount.json();
+        setDropdownOptions1(OwnAccounts);
 
-        const response2 = await fetch(`https://localhost:7097/NotAccount?AccountId=${user.sub}`, {
+        const OtherAccount = await fetch(`https://localhost:7097/GetNotAccount?AccountId=${user.sub}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`
           }
         });
-        if (!response2.ok) {
+        if (!OtherAccount.ok) {
           throw new Error('Failed to fetch dropdown 2 options');
         }
-        const data2 = await response2.json();
-        setDropdownOptions2(data2);
+        const OtherAccounts = await OtherAccount.json();
+        setDropdownOptions2(OtherAccounts);
       } catch (error) {
         setError(error.message);
       }
@@ -75,7 +75,7 @@ function CreatReqeustPage() {
 
       if (response.ok) {
         console.log('Request created successfully');
-        navigate(`/requests`);
+        navigate(`/Managerequests`);
       } else {
         console.error('Failed to create request');
       }

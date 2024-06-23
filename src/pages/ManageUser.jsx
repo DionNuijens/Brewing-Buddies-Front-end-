@@ -9,16 +9,15 @@ const AboutPage = () => {
   const [error, setError] = useState(null);
   const { user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
   const navigate = useNavigate();
-  // const { getAccessTokenSilently } = useAuth0(); 
 
   const handeleConnect = (user) => {
     sessionStorage.setItem('userConnect', JSON.stringify(user));
-    navigate('/');
+    navigate('/Connect');
   };
 
   const handleEdit = (user) => {
     sessionStorage.setItem('userEdit', JSON.stringify(user));
-    navigate(`/edit`);
+    navigate(`/editUser`);
   };
 
   const handleDelete = async (user) => {
@@ -26,14 +25,13 @@ const AboutPage = () => {
     if (confirmed) {
       try {
       const accessToken = await getAccessTokenSilently(); 
-      const response = axios.delete(`https://localhost:7097/Delete?userId=${user.id}`, {
+      const Delete = axios.delete(`https://localhost:7097/DeleteUser?userId=${user.id}`, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${accessToken}`
         },
       })
       console.log('User deleted successfully');
-      // console.log(response);
       window.location.reload();
     } catch (error) {
       console.error('Error deleting user:', error);
@@ -50,14 +48,14 @@ const AboutPage = () => {
       const accessToken = await getAccessTokenSilently();
       console.log(accessToken);
 
-      const response = await axios.get(`https://localhost:7097/account?AccountId=${user.sub}`, {
+      const Accounts = await axios.get(`https://localhost:7097/Getaccounts?AccountId=${user.sub}`, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${accessToken}`,
         },
       });
 
-      setData(response.data);
+      setData(Accounts.data);
     } catch (error) {
       console.error('Error fetching data:', error);
       setError(error.message);
@@ -75,12 +73,17 @@ const AboutPage = () => {
   }
 
   if (!isAuthenticated) {
-    return <div>Please log in to view this page.</div>;
+    return (
+      <div>
+        <h1>Mange User Page</h1>
+        <div>Please log in to view this page.</div>
+      </div>
+    );
   }
 
   return (
     <div>
-      <h1>About Page</h1>
+      <h1>Manage User Page</h1>
       {error ? (
         <p>Error: {error}</p>
       ) : data.length > 0 ? (
