@@ -30,16 +30,16 @@
                 try {
                     const accessToken = await getAccessTokenSilently();
                     const responses = await Promise.all([
-                        fetch(`https://localhost:7097/GetPending?AccountID=${user.sub}`, {
+                        fetch(`http://192.168.134.6:5000/GetPending?AccountID=${user.sub}`, {
                             headers: { 'Authorization': `Bearer ${accessToken}` }
                         }),
-                        fetch(`https://localhost:7097/GetReceived?AccountID=${user.sub}`, {
+                        fetch(`http://192.168.134.6:5000/GetReceived?AccountID=${user.sub}`, {
                             headers: { 'Authorization': `Bearer ${accessToken}` }
                         }),
-                        fetch(`https://localhost:7097/GetOngoing?AccountID=${user.sub}`, {
+                        fetch(`http://192.168.134.6:5000/GetOngoing?AccountID=${user.sub}`, {
                             headers: { 'Authorization': `Bearer ${accessToken}` }
                         }),
-                        fetch(`https://localhost:7097/GetComplete?AccountID=${user.sub}`, {
+                        fetch(`http://192.168.134.6:5000/GetComplete?AccountID=${user.sub}`, {
                             headers: { 'Authorization': `Bearer ${accessToken}` }
                         })
                     ]);
@@ -72,7 +72,7 @@
             if (confirmed) {
                 try {
                     const accessToken = await getAccessTokenSilently();
-                    await axios.delete(`https://localhost:7097/DeleteRequest?userId=${request.id}`, {
+                    await axios.delete(`http://192.168.134.6:5000/DeleteRequest?userId=${request.id}`, {
                         headers: { 'Authorization': `Bearer ${accessToken}` }
                     });
                     console.log('Request deleted successfully');
@@ -91,7 +91,7 @@
             try {
                 setIsButtonDisabled(true);
                 const accessToken = await getAccessTokenSilently();
-                const response = await fetch(`https://localhost:7097/api/Values/UpdateRequest?id=${request.id}`, {
+                const response = await fetch(`http://192.168.134.6:5000/api/Values/UpdateRequest?id=${request.id}`, {
                     method: 'PUT', 
                     headers: {
                         'Content-Type': 'application/json',
@@ -116,7 +116,7 @@
             console.log(request);
             try {
                 const accessToken = await getAccessTokenSilently();
-                const response = await fetch(`https://localhost:7097/updateRequest`, {
+                const response = await fetch(`http://192.168.134.6:5000/updateRequest`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',

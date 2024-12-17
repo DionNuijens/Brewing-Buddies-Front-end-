@@ -22,7 +22,7 @@ const EditUserPage = () => {
     const updatedUser = { ...user, userName };
 
     try {
-      const response = await fetch(`https://localhost:7097/UpdateUser`, {
+      const response = await fetch(`http://192.168.134.6:5000/UpdateUser`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

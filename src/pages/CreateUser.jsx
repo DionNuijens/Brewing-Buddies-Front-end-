@@ -26,7 +26,7 @@ const CreateUserPage = () => {
     try {
       const accessToken = await getAccessTokenSilently();
 
-      const response = await axios.post(`https://localhost:7097/AddUser`, newUser, {
+      const response = await axios.post(`http://192.168.134.6:5000/AddUser`, newUser, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${accessToken}`,
@@ -35,6 +35,7 @@ const CreateUserPage = () => {
 
       if (response.status >= 200 && response.status < 300) {
         console.log('User created successfully');
+        console.log(response.status);
         navigate(`/manageUsers`);
       } else {
         console.error('Failed to create user');

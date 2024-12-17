@@ -12,7 +12,7 @@ const Home = () => {
   const user = JSON.parse(sessionStorage.getItem('userConnect'));
 
   const searchForPlayer = async (event) => {
-    const APICallingAccountString = `https://localhost:7097/api/Values/GetSummoner?gameName=${searchName}&tagLine=${searchTag}`;
+    const APICallingAccountString = `http://192.168.134.6:5000/api/Values/GetSummoner?gameName=${searchName}&tagLine=${searchTag}`;
     
     try {
       const accessToken = await getAccessTokenSilently();
@@ -36,7 +36,7 @@ const Home = () => {
     try {
       const accessToken = await getAccessTokenSilently();
       
-      const response = await fetch(`https://localhost:7097/updateUser`, {
+      const response = await fetch(`http://192.168.134.6:5000/updateUser`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ const Home = () => {
         body: JSON.stringify(updatedUser),
       });
 
-      const response2 = await fetch('https://localhost:7097/LinkAccount', {
+      const response2 = await fetch('http://192.168.134.6:5000/LinkAccount', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

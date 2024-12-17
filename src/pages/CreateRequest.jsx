@@ -22,7 +22,7 @@ function CreatReqeustPage() {
         const accessToken = await getAccessTokenSilently();
         console.log(user.sub);
         
-        const OwnAccount = await fetch(`https://localhost:7097/GetConnectedAccounts?AccountId=${user.sub}`, {
+        const OwnAccount = await fetch(`http://192.168.134.6:5000/GetConnectedAccounts?AccountId=${user.sub}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`
           }
@@ -33,7 +33,7 @@ function CreatReqeustPage() {
         const OwnAccounts = await OwnAccount.json();
         setDropdownOptions1(OwnAccounts);
 
-        const OtherAccount = await fetch(`https://localhost:7097/GetNotAccount?AccountId=${user.sub}`, {
+        const OtherAccount = await fetch(`http://192.168.134.6:5000/GetNotAccount?AccountId=${user.sub}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`
           }
@@ -64,7 +64,7 @@ function CreatReqeustPage() {
     try {
       const accessToken = await getAccessTokenSilently();
       
-      const response = await fetch(`https://localhost:7097/AddRequest`, {
+      const response = await fetch(`http://192.168.134.6:5000/AddRequest`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

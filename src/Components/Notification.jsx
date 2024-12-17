@@ -13,7 +13,7 @@ const NotificationComponent = () => {
                 const token = await getAccessTokenSilently();
 
                 const connection = new signalR.HubConnectionBuilder()
-                    .withUrl("https://localhost:7097/NotificationHub", {
+                    .withUrl("http://192.168.134.6:5000/NotificationHub", {
                         accessTokenFactory: () => token,
                     })
                     .withAutomaticReconnect()

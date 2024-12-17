@@ -25,7 +25,7 @@ const AboutPage = () => {
     if (confirmed) {
       try {
       const accessToken = await getAccessTokenSilently(); 
-      const Delete = axios.delete(`https://localhost:7097/DeleteUser?userId=${user.id}`, {
+      const Delete = axios.delete(`http://192.168.134.6:5000/DeleteUser?userId=${user.id}`, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${accessToken}`
@@ -48,7 +48,7 @@ const AboutPage = () => {
       const accessToken = await getAccessTokenSilently();
       console.log(accessToken);
 
-      const Accounts = await axios.get(`https://localhost:7097/Getaccounts?AccountId=${user.sub}`, {
+      const Accounts = await axios.get(`http://192.168.134.6:5000/Getaccounts?AccountId=${user.sub}`, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${accessToken}`,

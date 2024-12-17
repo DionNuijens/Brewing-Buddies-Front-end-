@@ -34,7 +34,7 @@ describe('CRUD', () => {
   });
 
   it('Should display the list of Users', () => {
-    cy.intercept('GET', '/account*').as('getUser');
+    cy.intercept('GET', '/Getaccounts*').as('getUser');
     cy.contains('Manage Users').click();
     cy.wait('@getUser').its('response.statusCode').should('eq', 200);
     cy.get('.user-container').should('be.visible'); 
@@ -43,7 +43,7 @@ describe('CRUD', () => {
   });
 
   it('should return 400 error on updating user with empty input', () => {
-    cy.intercept('PUT', '/updateUser*').as('updateUser');
+    cy.intercept('PUT', '/UpdateUser*').as('updateUser');
     cy.contains('Manage Users').click();
     cy.get('#editUser').click();
     cy.get('#userName').clear();
@@ -53,14 +53,14 @@ describe('CRUD', () => {
   });
 
   it('should edit a user', () => {
-    cy.intercept('PUT', '/updateUser*').as('updateUser');
+    cy.intercept('PUT', '/UpdateUser*').as('updateUser');
     cy.contains('Manage Users').click();
     cy.get('#editUser').click();
     cy.get('#userName').clear().type(editUserName);
     cy.get('#updateUser').click(); 
 
     cy.contains('.user-container', editUserName).should('exist');
-    cy.wait('@updateUser').its('response.statusCode').should('eq', 204);
+    cy.wait('@updateUser').its('response.statusCode').should('eq', 200);
   });
 
   it('should delete a user', () => {
@@ -69,7 +69,7 @@ describe('CRUD', () => {
     cy.get('#deleteUser').click();
 
     cy.contains('.user-container', editUserName).should('not.exist');
-    cy.wait('@deleteUser').its('response.statusCode').should('eq', 200); 
+    cy.wait('@deleteUser').its('response.statusCode').should('eq', 204); 
   });
 
 });
